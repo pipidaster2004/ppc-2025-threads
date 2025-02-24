@@ -28,7 +28,7 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::ValidationImpl
   }
   auto* lbound = reinterpret_cast<double*>(task_data->inputs[0]);
   auto* ubound = reinterpret_cast<double*>(task_data->inputs[1]);
-  auto* steps = reinterpret_cast<double*>(task_data->inputs[2]);
+  auto* steps = reinterpret_cast<int*>(task_data->inputs[2]);
   if (lbound == nullptr || ubound == nullptr) {
     return false;
   }
