@@ -277,35 +277,3 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_3_dim_1) {
   double exp = 0.125;
   ASSERT_NEAR(res, exp, 1e-1);
 }
-
-// TEST(khokhlov_a_multi_integration_simpson_method_seq, test_4_dim) {
-//   // create data
-//   const int dimension = 4;
-//   std::vector<double> l_bound = {0.0, 0.0, 0.0, 0.0};
-//   std::vector<double> u_bound = {1.0, 1.0, 1.0, 1.0};
-//   std::vector<int> steps = {500, 500, 500, 500};
-//   double res = 0.0;
-
-//   // create task data
-//   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-//   task_data_seq->inputs_count.emplace_back(dimension);
-//   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(l_bound.data()));
-//   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(u_bound.data()));
-//   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(steps.data()));
-//   task_data_seq->inputs_count.emplace_back(l_bound.size());
-//   task_data_seq->inputs_count.emplace_back(u_bound.size());
-//   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&res));
-
-//   // crate task
-//   khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq monte_carlo(task_data_seq);
-//   monte_carlo.integrand = [](const std::vector<double> &point) {
-//     return (point[0] * point[1]) + (point[2] * point[3]);
-//   };
-//   ASSERT_TRUE(monte_carlo.ValidationImpl());
-//   monte_carlo.PreProcessingImpl();
-//   monte_carlo.RunImpl();
-//   monte_carlo.PostProcessingImpl();
-
-//   double exp = 0.5;
-//   ASSERT_NEAR(res, exp, 1e-1);
-// }
