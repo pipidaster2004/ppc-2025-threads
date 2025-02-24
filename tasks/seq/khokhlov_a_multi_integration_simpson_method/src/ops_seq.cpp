@@ -92,7 +92,7 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::RunImpl() {
 
     double weight = 1.0;
     for (unsigned int i = 0; i < dimension_; ++i) {
-      if (indices[i] == 0 || indices[i] == steps[i]){
+      if (indices[i] == 0 || indices[i] == steps[i]) {
         weight *= 1.0;
       } else if (indices[i] % 2 == 1) {
         weight *= 4.0;
