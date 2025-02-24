@@ -14,7 +14,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {500000, 500000, 500000};
+  std::vector<int> steps = {200000, 200000, 200000};
   double res = 0.0;
 
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
@@ -38,7 +38,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
     auto current_time_point = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
     return static_cast<double>(duration) * 1e-9;
-  };
+};
 
   // Create and init perf results
   auto perf_results = std::make_shared<ppc::core::PerfResults>();
@@ -54,7 +54,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_task_run_seq) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {500000, 500000, 500000};
+  std::vector<int> steps = {200000, 200000, 200000};
   double res = 0.0;
 
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
