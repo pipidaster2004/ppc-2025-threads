@@ -14,7 +14,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {100000, 100000, 100000};
+  std::vector<int> steps = {500000, 500000, 500000};
   double res = 0.0;
 
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
@@ -29,7 +29,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
   // crate task
   auto test_task_seq = std::make_shared<khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq>(task_data_seq);
   test_task_seq->integrand = [](const std::vector<double> &point) {
-    return cos(point[0]) + (sin(point[1]) * cos(point[2]));
+    return point[0] * point[1] * point[2];
   };
 
   // create perf attrib
@@ -48,7 +48,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_seq);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  double expected = 1.19551;
+  double expected = 0.125;
   ASSERT_NEAR(res, expected, 1e-1);
 }
 
@@ -56,7 +56,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_task_run_seq) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {100000, 100000, 100000};
+  std::vector<int> steps = {500000, 500000, 500000};
   double res = 0.0;
 
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
@@ -71,7 +71,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_task_run_seq) {
   // crate task
   auto test_task_seq = std::make_shared<khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq>(task_data_seq);
   test_task_seq->integrand = [](const std::vector<double> &point) {
-    return cos(point[0]) + (sin(point[1]) * cos(point[2]));
+    return point[0] * point[1] * point[2];
   };
 
   // create perf attrib
@@ -91,6 +91,6 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_task_run_seq) {
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_seq);
   perf_analyzer->TaskRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  double expected = 1.19551;
+  double expected = 0.125;
   ASSERT_NEAR(res, expected, 1e-1);
 }
