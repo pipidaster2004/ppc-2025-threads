@@ -16,8 +16,6 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::PreProcessingI
   auto* size = reinterpret_cast<int*>(task_data->inputs[2]);
   std::copy(size, size + dimension_, sizes_.data());
   result_ = 0.0;
-  height_ = FindHeights();
-  steps_ = FindSteps();
   return true;
 }
 
@@ -46,8 +44,8 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::ValidationImpl
 }
 
 bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::RunImpl() {
-  std::vector<double> h(dimension_);
-  std::vector<int> steps(dimension_);
+  height_ = FindHeights();
+  steps_ = FindSteps();
   std::vector<int> nodes(dimension_);
   std::vector<int> offset(dimension_);
 
@@ -84,7 +82,7 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::RunImpl() {
 
     double weight = 1.0;
     for (size_t i = 0; i < dimension_; ++i) {
-      if (indices[i] == 0 || indices[i] == steps[i])
+      if (indices[i] == 0 || indices[i] == steps_[i])
         weight *= 1.0;
       else if (indices[i] % 2 == 1)
         weight *= 4.0;
