@@ -114,7 +114,7 @@ std::vector<double> khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq:
 
 std::vector<double> khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::FindSteps() {
   double size = 0.0;
-  for (int i = 0; i < dimension_; i++) {
+  for (unsigned int i = 0; i < dimension_; i++) {
     size += sizes_[i];
   }
   std::vector<double> steps(size);
