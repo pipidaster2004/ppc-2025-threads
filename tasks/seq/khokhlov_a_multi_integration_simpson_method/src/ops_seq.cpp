@@ -20,16 +20,16 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::PreProcessingI
 }
 
 bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::ValidationImpl() {
-  if (task_data->inputs_count[0] < 1 || task_data->inputs_count[1] < 1) {
+  if (task_data->inputs_count[0] < 1) {
     return false;
   }
-  if (task_data->inputs_count[2] != task_data->inputs_count[3]) {
+  if (task_data->inputs_count[1] != task_data->inputs_count[2]) {
     return false;
   }
   auto* lbound = reinterpret_cast<double*>(task_data->inputs[0]);
   auto* ubound = reinterpret_cast<double*>(task_data->inputs[1]);
   auto* steps = reinterpret_cast<int*>(task_data->inputs[2]);
-  if (lbound == nullptr || ubound == nullptr) {
+  if (lbound == nullptr || ubound == nullptr || steps == nullptr) {
     return false;
   }
   for (unsigned int i = 0; i < task_data->inputs_count[0]; i++) {
