@@ -28,9 +28,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_pipline_run_seq) {
 
   // crate task
   auto test_task_seq = std::make_shared<khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq>(task_data_seq);
-  test_task_seq->integrand = [](const std::vector<double> &point) {
-    return point[0] * point[1] * point[2];
-  };
+  test_task_seq->integrand = [](const std::vector<double> &point) { return point[0] * point[1] * point[2]; };
 
   // create perf attrib
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -70,9 +68,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_task_run_seq) {
 
   // crate task
   auto test_task_seq = std::make_shared<khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq>(task_data_seq);
-  test_task_seq->integrand = [](const std::vector<double> &point) {
-    return point[0] * point[1] * point[2];
-  };
+  test_task_seq->integrand = [](const std::vector<double> &point) { return point[0] * point[1] * point[2]; };
 
   // create perf attrib
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
