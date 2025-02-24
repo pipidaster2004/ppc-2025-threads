@@ -22,12 +22,8 @@ class SimpsonSeq : public ppc::core::Task {
   unsigned int dimension_;
   std::vector<double> lower_bound_;
   std::vector<double> upper_bound_;
-  std::vector<double> height_;
   std::vector<int> sizes_;
-  std::vector<double> steps_;
   double result_;
-  std::vector<double> FindHeights();
-  std::vector<double> FindSteps();
 };
 
 }  // namespace khokhlov_a_multi_integration_simpson_method_seq

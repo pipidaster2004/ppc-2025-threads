@@ -44,45 +44,55 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::ValidationImpl
 }
 
 bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::RunImpl() {
-  height_ = FindHeights();
-  steps_ = FindSteps();
+  std::vector<double> h(dimension_);
+  std::vector<int> steps(dimension_);
   std::vector<int> nodes(dimension_);
   std::vector<int> offset(dimension_);
 
   std::vector<double> grid;
   int totalPoints = 0;
 
-  for (size_t i = 0; i < dimension_; ++i) {
-    nodes[i] = sizes_[i] + 1;
+  for (unsigned int i = 0; i < dimension_; ++i) {
+    double a = lower_bound_[i];
+    double b = upper_bound_[i];
+
+    steps[i] = sizes_[i];
+    nodes[i] = steps[i] + 1;
+    h[i] = (b - a) / steps[i];
 
     offset[i] = totalPoints;
+
+    for (int j = 0; j < nodes[i]; ++j) {
+      grid.push_back(a + j * h[i]);
+    }
 
     totalPoints += nodes[i];
   }
 
   std::vector<int> indices(dimension_, 0);
   std::vector<double> point(dimension_);
+  double integral = 0.0;
 
   int totalIterations = 1;
-  for (size_t i = 0; i < dimension_; ++i) {
+  for (unsigned int i = 0; i < dimension_; ++i) {
     totalIterations *= nodes[i];
   }
 
   for (int linearIndex = 0; linearIndex < totalIterations; ++linearIndex) {
     int temp = linearIndex;
 
-    for (size_t i = 0; i < dimension_; ++i) {
+    for (unsigned int i = 0; i < dimension_; ++i) {
       indices[i] = temp % nodes[i];
       temp /= nodes[i];
     }
 
-    for (size_t i = 0; i < dimension_; ++i) {
-      point[i] = steps_[offset[i] + indices[i]];
+    for (unsigned int i = 0; i < dimension_; ++i) {
+      point[i] = grid[offset[i] + indices[i]];
     }
 
     double weight = 1.0;
-    for (size_t i = 0; i < dimension_; ++i) {
-      if (indices[i] == 0 || indices[i] == steps_[i])
+    for (unsigned int i = 0; i < dimension_; ++i) {
+      if (indices[i] == 0 || indices[i] == steps[i])
         weight *= 1.0;
       else if (indices[i] % 2 == 1)
         weight *= 4.0;
@@ -90,38 +100,17 @@ bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::RunImpl() {
         weight *= 2.0;
     }
 
-    result_ += weight * integrand(point);
+    integral += weight * integrand(point);
   }
 
-  for (size_t i = 0; i < dimension_; ++i) {
-    result_ *= height_[i] / 3.0;
+  for (unsigned int i = 0; i < dimension_; ++i) {
+    integral *= h[i] / 3.0;
   }
+  result_ = integral;
   return true;
 }
 
 bool khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::PostProcessingImpl() {
   reinterpret_cast<double*>(task_data->outputs[0])[0] = result_;
   return true;
-}
-
-std::vector<double> khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::FindHeights() {
-  std::vector<double> h(dimension_);
-  for (unsigned int i = 0; i < dimension_; i++) {
-    h[i] = (upper_bound_[i] - lower_bound_[i]) / sizes_[i];
-  }
-  return h;
-}
-
-std::vector<double> khokhlov_a_multi_integration_simpson_method_seq::SimpsonSeq::FindSteps() {
-  double size = 0.0;
-  for (unsigned int i = 0; i < dimension_; i++) {
-    size += sizes_[i];
-  }
-  std::vector<double> steps(size);
-  for (unsigned int i = 0; i < dimension_; i++) {
-    for (int j = 0; j < sizes_[i]; j++) {
-      steps[i * sizes_[i] + j] = lower_bound_[i] + j * height_[i];
-    }
-  }
-  return steps;
 }
