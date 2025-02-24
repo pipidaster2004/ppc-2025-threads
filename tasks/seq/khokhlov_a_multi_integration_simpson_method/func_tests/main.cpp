@@ -291,7 +291,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_seq, test_4_dim) {
   task_data_seq->inputs_count.emplace_back(dimension);
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(l_bound.data()));
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(u_bound.data()));
-  task_data_seq->inputs_count.emplace_back(n);
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(steps.data()));
   task_data_seq->inputs_count.emplace_back(l_bound.size());
   task_data_seq->inputs_count.emplace_back(u_bound.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&res));
