@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <vector>
 
-
 bool khokhlov_a_multi_integration_simpson_method_omp::SimpsonOmp::PreProcessingImpl() {
   dimension_ = task_data->inputs_count[0];
   lower_bound_ = std::vector<double>(dimension_);
@@ -98,7 +97,6 @@ bool khokhlov_a_multi_integration_simpson_method_omp::SimpsonOmp::RunImpl() {
   result_ = integral;
   return true;
 }
-
 
 bool khokhlov_a_multi_integration_simpson_method_omp::SimpsonOmp::PostProcessingImpl() {
   reinterpret_cast<double*>(task_data->outputs[0])[0] = result_;
