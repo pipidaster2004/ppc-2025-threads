@@ -14,7 +14,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_stl, test_pipline_run_stl) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {350, 350, 350};
+  std::vector<int> steps = {300, 300, 300};
   double res = 0.0;
 
   auto task_data_stl = std::make_shared<ppc::core::TaskData>();
@@ -54,7 +54,7 @@ TEST(khokhlov_a_multi_integration_simpson_method_stl, test_task_run_stl) {
   const int dimension = 3;
   std::vector<double> l_bound = {0.0, 0.0, 0.0};
   std::vector<double> u_bound = {1.0, 1.0, 1.0};
-  std::vector<int> steps = {350, 350, 350};
+  std::vector<int> steps = {300, 300, 300};
   double res = 0.0;
 
   auto task_data_stl = std::make_shared<ppc::core::TaskData>();

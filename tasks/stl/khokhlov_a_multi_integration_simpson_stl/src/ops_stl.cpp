@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <numeric>
 #include <vector>
-#include <stdexcept>
 
 namespace khokhlov_a_multi_integration_simpson_method_stl {
 
@@ -48,7 +47,7 @@ bool SimpsonStl::ValidationImpl() {
 
 bool SimpsonStl::RunImpl() {
   if (!integrand) {
-    return false; // Prevent crash if integrand is not set
+    return false;
   }
 
   std::vector<double> h(dimension_);
@@ -57,26 +56,24 @@ bool SimpsonStl::RunImpl() {
   std::vector<int> offsets(dimension_);
   std::vector<double> grid;
 
-  // Calculate steps, nodes, and grid points
   int total_points = 0;
   for (unsigned int i = 0; i < dimension_; ++i) {
     if (sizes_[i] <= 0) {
-      return false; // Prevent division by zero
+      return false; 
     }
     steps[i] = sizes_[i];
     nodes[i] = steps[i] + 1;
     h[i] = (upper_bound_[i] - lower_bound_[i]) / steps[i];
     if (h[i] <= 0.0) {
-      return false; // Invalid step size
+      return false; 
     }
     offsets[i] = total_points;
 
     std::generate_n(std::back_inserter(grid), nodes[i], 
-      [j = 0, a = lower_bound_[i], h_i = h[i]]() mutable { return a + (j++) * h_i; });
+                    [j = 0, a = lower_bound_[i], h_i = h[i]]() mutable { return a + (j++) * h_i; });
     total_points += nodes[i];
   }
 
-  // Calculate total iterations
   int total_iterations = std::accumulate(nodes.begin(), nodes.end(), 1, std::multiplies<int>());
   if (total_iterations <= 0) {
     return false;
@@ -86,19 +83,16 @@ bool SimpsonStl::RunImpl() {
   std::vector<int> indices(dimension_, 0);
   std::vector<double> point(dimension_);
 
-  // Iterate over all grid points
   for (int linear_index = 0; linear_index < total_iterations; ++linear_index) {
-    // Convert linear index to multidimensional indices
     int temp = linear_index;
     for (unsigned int i = 0; i < dimension_; ++i) {
       if (nodes[i] == 0) {
-        return false; // Prevent division by zero
+        return false; 
       }
       indices[i] = temp % nodes[i];
       temp /= nodes[i];
     }
 
-    // Compute point coordinates
     for (unsigned int i = 0; i < dimension_; ++i) {
       if (indices[i] >= nodes[i]) {
         throw std::out_of_range("Index out of bounds in grid access");
@@ -106,19 +100,16 @@ bool SimpsonStl::RunImpl() {
       point[i] = grid[offsets[i] + indices[i]];
     }
 
-    // Calculate weight using Simpson's rule
     double weight = 1.0;
     for (unsigned int i = 0; i < dimension_; ++i) {
-      weight *= (indices[i] == 0 || indices[i] == steps[i]) ? 1.0 : 
-                (indices[i] % 2 == 1) ? 4.0 : 2.0;
+      weight *= (indices[i] == 0 || indices[i] == steps[i]) ? 1.0 : (indices[i] % 2 == 1) ? 4.0 : 2.0;
     }
 
     integral += weight * integrand(point);
   }
 
-  // Apply step size scaling
-  result_ = integral * std::accumulate(h.begin(), h.end(), 1.0, 
-    [](double prod, double h_i) { return prod * h_i / 3.0; });
+  result_ = 
+      integral * std::accumulate(h.begin(), h.end(), 1.0, [](double prod, double h_i) { return prod * h_i / 3.0; });
 
   return true;
 }
