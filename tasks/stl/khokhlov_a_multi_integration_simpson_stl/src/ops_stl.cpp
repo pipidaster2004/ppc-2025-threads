@@ -59,7 +59,7 @@ bool SimpsonStl::RunImpl() {
   int total_points = 0;
   for (unsigned int i = 0; i < dimension_; ++i) {
     if (sizes_[i] <= 0) {
-      return false; 
+      return false;
     }
     steps[i] = sizes_[i];
     nodes[i] = steps[i] + 1;
@@ -69,7 +69,7 @@ bool SimpsonStl::RunImpl() {
     }
     offsets[i] = total_points;
 
-    std::generate_n(std::back_inserter(grid), nodes[i], 
+    std::generate_n(std::back_inserter(grid), nodes[i],
                     [j = 0, a = lower_bound_[i], h_i = h[i]]() mutable { return a + (j++) * h_i; });
     total_points += nodes[i];
   }
@@ -87,7 +87,7 @@ bool SimpsonStl::RunImpl() {
     int temp = linear_index;
     for (unsigned int i = 0; i < dimension_; ++i) {
       if (nodes[i] == 0) {
-        return false; 
+        return false;
       }
       indices[i] = temp % nodes[i];
       temp /= nodes[i];
@@ -108,7 +108,7 @@ bool SimpsonStl::RunImpl() {
     integral += weight * integrand(point);
   }
 
-  result_ = 
+  result_ =
       integral * std::accumulate(h.begin(), h.end(), 1.0, [](double prod, double h_i) { return prod * h_i / 3.0; });
 
   return true;
