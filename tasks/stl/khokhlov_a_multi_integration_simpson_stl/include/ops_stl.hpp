@@ -1,0 +1,28 @@
+#pragma once
+
+#include <functional>
+#include <vector>
+
+#include "core/task/include/task.hpp"
+
+namespace khokhlov_a_multi_integration_simpson_method_stl {
+
+class SimpsonStl : public ppc::core::Task {
+ public:
+  explicit SimpsonStl(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
+  bool PreProcessingImpl() override;
+  bool ValidationImpl() override;
+  bool RunImpl() override;
+  bool PostProcessingImpl() override;
+
+  std::function<double(const std::vector<double>&)> integrand;
+
+ private:
+  unsigned int dimension_;
+  std::vector<double> lower_bound_;
+  std::vector<double> upper_bound_;
+  std::vector<int> sizes_;
+  double result_;
+};
+
+}  // namespace khokhlov_a_multi_integration_simpson_method_stl
