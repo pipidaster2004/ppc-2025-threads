@@ -65,7 +65,7 @@ bool SimpsonStl::RunImpl() {
     nodes[i] = steps[i] + 1;
     h[i] = (upper_bound_[i] - lower_bound_[i]) / steps[i];
     if (h[i] <= 0.0) {
-      return false; 
+      return false;
     }
     offsets[i] = total_points;
 
